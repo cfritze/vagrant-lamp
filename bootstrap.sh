@@ -6,6 +6,7 @@ PROJECTFOLDER='myproject'
 
 # create project folder
 sudo mkdir "/var/www/html/${PROJECTFOLDER}"
+sudo mkdir "/var/www/html/${PROJECTFOLDER}/public_html"
 
 # set PHP 5.6
 sudo add-apt-repository ppa:ondrej/php5-5.6
@@ -36,8 +37,8 @@ sudo apt-get -y install phpmyadmin
 # setup hosts file
 VHOST=$(cat <<EOF
 <VirtualHost *:80>
-    DocumentRoot "/var/www/html/${PROJECTFOLDER}"
-    <Directory "/var/www/html/${PROJECTFOLDER}">
+    DocumentRoot "/var/www/html/${PROJECTFOLDER}/public_html"
+    <Directory "/var/www/html/${PROJECTFOLDER}/public_html">
         AllowOverride All
         Require all granted
     </Directory>
@@ -71,6 +72,15 @@ xdebug.remote_host=192.168.33.22
 xdebug.remote_port=9000
 xdebug.remote_autostart=0
 xdebug.remote_log=/tmp/php5-xdebug.log
+xdebug.max_nesting_level=400
+" | sudo tee /etc/php5/apache2/php.ini -a
+
+# custom php.ini config 
+echo "
+max_execution_time=300
+max_input_vars = 2000
+memory_limit = 1024M
+upload_max_filesize = 100M
 " | sudo tee /etc/php5/apache2/php.ini -a
 
 # restart apache
