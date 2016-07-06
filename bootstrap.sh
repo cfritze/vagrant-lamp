@@ -81,6 +81,8 @@ max_execution_time=300
 max_input_vars = 2000
 memory_limit = 1024M
 upload_max_filesize = 100M
+post_max_size = 100M
+always_populate_raw_post_data=-1
 " | sudo tee /etc/php5/apache2/php.ini -a
 
 # restart apache
